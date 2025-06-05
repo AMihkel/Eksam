@@ -1,0 +1,30 @@
+---
+- name: Database
+  hosts: dbservers
+  become: true
+  tasks:
+   - name: Update
+     apt:
+       update_cache: yes
+   - name: install MariaDB
+     apt:
+       name: mariadb-server
+       state: present
+
+- name: veebiserver
+  hosts: webservers
+  become: true
+  tasks:
+   - name: update cache
+     ansible.builtin.dnf:
+       update_cache: yes
+   - name: install Httpd
+     package:
+       name: httpd
+       state: present
+   - name: Start service
+     service:
+       name: httpd
+       state: started
+       enabled: yes
+...
